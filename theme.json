@@ -10,7 +10,9 @@
     }
   },
   "homepage": "https://github.com/yourusername/zen-sidebar-switcher-inline",
-  "style": {},
+  "style": {
+    "chrome": "userChrome.css"
+  },
   "author": "You",
   "version": "1.0.0",
   "tags": [
