@@ -1,0 +1,24 @@
+{
+  "id": "zen-sidebar-switcher-inline",
+  "name": "Sidebar Panel Switcher Inline",
+  "description": "Show all sidebar panel options inline instead of a popup",
+  "scripts": {
+    "zenSidebarSwitcher.uc.js": {
+      "include": [
+        "chrome://browser/content/browser.xhtml"
+      ]
+    }
+  },
+  "homepage": "https://github.com/yourusername/zen-sidebar-switcher-inline",
+  "style": {},
+  "author": "You",
+  "version": "1.0.0",
+  "tags": [
+    "Zen Browser",
+    "Sidebar",
+    "UX",
+    "Sine"
+  ],
+  "createdAt": "2026-03-20",
+  "updatedAt": "2026-03-20"
+}
