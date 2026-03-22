@@ -1,64 +1,127 @@
-console.log("ZEN SIDEBAR SWITCHER INLINE LOADED");
-
 (function () {
-  const POPUP_ID = "sidebarMenu-popup";
-  const HEADER_ID = "sidebar-header";
-  const EXCLUDE_IDS = [
-    "sidebar-menu-close",
-    "sidebar-reverse-position",
-    "sidebar-extensions-separator"
+  console.log("Initializing sidebar-switcher and toolbar buttons...");
+
+  // Sidebar buttons mapping
+  const sidebarMapping = [
+    { buttonId: "history-panelmenu", menuItemId: "sidebar-switcher-history" },
+    { buttonId: "bookmarks-menu-button", menuItemId: "sidebar-switcher-bookmarks" },
+    { buttonId: "sync-button", menuItemId: "sidebar-switcher-tabs" },
+    { buttonId: "logins-button", menuItemId: "sidebar-switcher-megalist" },
   ];
 
-  function initSwitcherButtons() {
-    const header = document.getElementById(HEADER_ID);
-    const popup = document.getElementById(POPUP_ID);
+  sidebarMapping.forEach(({ buttonId, menuItemId }) => {
+    const panelButton = document.getElementById(buttonId);
+    const menuItem = document.getElementById(menuItemId);
 
-    // If UI not ready, retry later
-    if (!header || !popup) return false;
+    if (!panelButton) {
+      console.warn("Sidebar button not found:", buttonId);
+      return;
+    }
+    if (!menuItem) {
+      console.warn("Menu item not found:", menuItemId);
+      return;
+    }
 
-    // Already initialized?
-    if (header.querySelector(".sidebar-switcher-inline")) return true;
+    // Remove BMB_bookmarksPopup inside bookmarks button
+    if (buttonId === "bookmarks-menu-button") {
+      const popup = panelButton.querySelector("#BMB_bookmarksPopup");
+      if (popup) {
+        popup.remove();
+        console.log("Removed BMB_bookmarksPopup from bookmarks-menu-button");
+      }
+    }
 
-    // Collect menu items, excluding certain IDs
-    const items = Array.from(popup.querySelectorAll("menuitem")).filter(
-      mi => !EXCLUDE_IDS.includes(mi.id)
-    );
+    // Clone button to remove all old listeners
+    const newBtn = panelButton.cloneNode(true);
+    panelButton.replaceWith(newBtn);
 
-    // Create inline container
-    const container = document.createElement("hbox");
-    container.className = "sidebar-switcher-inline";
-    container.style.display = "flex";
-    container.style.flexDirection = "row";
-    container.style.alignItems = "center";
-    container.style.justifyContent = "flex-start";
-    container.style.gap = "4px";
+    // Assign menuitem click behavior
+    const handler = (event) => {
+      if (event.button !== 0) return; // left click only
+      event.stopPropagation();
+      event.preventDefault();
 
-    items.forEach(mi => {
-      const btn = document.createElement("toolbarbutton");
-      btn.setAttribute("id", mi.id + "-inline");
-      btn.setAttribute("label", mi.label);
-      btn.setAttribute("class", mi.className + " sidebar-switcher-button");
-      btn.setAttribute("tooltiptext", mi.getAttribute("tooltip") || "");
-      btn.style.flex = "0 0 auto";
-      btn.style.minWidth = "auto";
+      try {
+        if (typeof menuItem._onClick === "function") {
+          menuItem._onClick();
+          console.log(`Triggered _onClick for ${menuItemId}`);
+        } else if (typeof menuItem.doCommand === "function") {
+          menuItem.doCommand();
+          console.log(`Triggered doCommand for ${menuItemId}`);
+        } else {
+          console.warn("No clickable handler found on menuItem", menuItemId);
+        }
+      } catch (e) {
+        console.error("Error triggering menuitem:", menuItemId, e);
+      }
+    };
 
-      // Copy click/command handlers safely
-      if (mi.onclick) btn.addEventListener("click", mi.onclick);
-      if (mi.oncommand) btn.addEventListener("click", mi.oncommand);
-      btn.addEventListener("click", () => mi.doCommand && mi.doCommand());
+    // Remove previous custom handler if exists
+    if (newBtn._customHandler) {
+      newBtn.removeEventListener("click", newBtn._customHandler);
+    }
 
-      container.appendChild(btn);
-    });
+    // Save handler reference and attach
+    newBtn._customHandler = handler;
+    newBtn.addEventListener("click", handler);
 
-    // Insert container at the top of the header
-    header.insertBefore(container, header.firstChild);
-    return true;
-  }
+    console.log(`Cloned and wired menuitem behavior for ${buttonId}`);
+  });
 
-  // Retry until the UI is ready
-  function waitForUI() {
-    if (!initSwitcherButtons()) setTimeout(waitForUI, 50);
-  }
+  // Toolbar browser-action button
+  const toolbarMapping = [
+    {
+      buttonId: "_446900e4-71c2-419f-a6a7-df9c091e268b_-browser-action",
+      menuItemId: "sidebarswitcher_menu__446900e4-71c2-419f-a6a7-df9c091e268b_-sidebar-action",
+    },
+  ];
 
-  waitForUI();
+  toolbarMapping.forEach(({ buttonId, menuItemId }) => {
+    const toolbarButton = document.getElementById(buttonId);
+    const menuItem = document.getElementById(menuItemId);
+
+    if (!toolbarButton) {
+      console.warn("Toolbar button not found:", buttonId);
+      return;
+    }
+    if (!menuItem) {
+      console.warn("Menu item not found:", menuItemId);
+      return;
+    }
+
+    // Clone toolbar button to remove listeners
+    const newBtn = toolbarButton.cloneNode(true);
+    toolbarButton.replaceWith(newBtn);
+
+    const handler = (event) => {
+      if (event.button !== 0) return;
+      event.stopPropagation();
+      event.preventDefault();
+
+      try {
+        if (typeof menuItem._onClick === "function") {
+          menuItem._onClick();
+          console.log(`Triggered _onClick for ${menuItemId}`);
+        } else if (typeof menuItem.doCommand === "function") {
+          menuItem.doCommand();
+          console.log(`Triggered doCommand for ${menuItemId}`);
+        } else {
+          console.warn("No clickable handler found on menuItem", menuItemId);
+        }
+      } catch (e) {
+        console.error("Error triggering menuitem:", menuItemId, e);
+      }
+    };
+
+    if (newBtn._customHandler) {
+      newBtn.removeEventListener("click", newBtn._customHandler);
+    }
+
+    newBtn._customHandler = handler;
+    newBtn.addEventListener("click", handler);
+
+    console.log(`Cloned and wired menuitem behavior for toolbar button ${buttonId}`);
+  });
+
+  console.log("All sidebar and toolbar buttons wired successfully!");
 })();
