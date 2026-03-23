@@ -1,66 +1,9 @@
-/* =============================
-   Sidebar Switcher Inline Buttons
-   ============================= */
+[data-sidebar-active="true"] {
 
-/* container flex */
-.sidebar-switcher-inline {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  gap: 4px !important;
+  background: var(--button-background-color-hover) !important;
+  
 }
 
-/* buttons sizing */
-.sidebar-switcher-inline .sidebar-switcher-button {
-  min-width: 24px !important;
-  min-height: 24px !important;
-  padding: 2px 6px !important;
-  font-size: 11px !important;
-  flex: 0 0 auto !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-  background-size: 16px 16px !important;
-  text-indent: 0 !important; /* optional, keeps label visible if needed */
-}
-
-/* move container to leftmost of header */
-#sidebar-header > .sidebar-switcher-inline {
-  order: -1 !important;
-}
-
-/* =============================
-   Set icons for built-in items
-   ============================= */
-#sidebar-menu-bookmarks-inline {
-  background-image: url("bookmark-star-on-tray.svg") !important;
-}
-
-#sidebar-menu-history-inline {
-  background-image: url("history.svg") !important;
-}
-
-#sidebar-menu-synced-tabs-inline {
-  background-image: url("chrome://browser/skin/synced-tabs.svg") !important;
-}
-
-#sidebar-menu-passwords-inline {
-  background-image: url("passwords.svg") !important;
-}
-
-/* =============================
-   WebExtension items
-   ============================= */
-.sidebar-switcher-inline .sidebar-switcher-button[style*="--webextension-menuitem-image"] {
-  background-image: var(--webextension-menuitem-image) !important;
-}
-
-/* optional: hide label if you only want icon */
-.sidebar-switcher-inline .sidebar-switcher-button {
-  text-align: center !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
+#zen-sidebar-extra-panel .toolbaritem-combined-buttons {
+	margin-inline: 0 !important;
 }
