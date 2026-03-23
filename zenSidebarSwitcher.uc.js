@@ -18,7 +18,6 @@
     const state = SidebarController.getUIState();
     const current = SidebarController.currentID;
 
-    // highlight ONLY if sidebar is open
     const isOpen = state?.panelOpen;
 
     // mapped buttons
@@ -33,7 +32,7 @@
       }
     });
 
-    // addon buttons (auto-detect)
+    // addon buttons
     if (extraPanel) {
       extraPanel.querySelectorAll("toolbaritem").forEach((btn) => {
         const sidebarId = btn.id.replace("-browser-action", "-sidebar-action");
@@ -50,7 +49,7 @@
   function setupButtons() {
     mapping.forEach(({ buttonId, sidebarId }) => {
       const btn = document.getElementById(buttonId);
-      if (!btn) return;
+      if (!btn || btn._sidebarHandler) return;
 
       // remove bookmarks popup
       if (buttonId === "bookmarks-menu-button") {
@@ -64,30 +63,36 @@
         e.preventDefault();
 
         SidebarController.toggle(sidebarId);
-
-        // update highlight after toggle
         setTimeout(updateActiveButtons, 0);
       };
 
-      if (btn._sidebarHandler) {
-        btn.removeEventListener("click", btn._sidebarHandler);
-      }
-
       btn._sidebarHandler = handler;
       btn.addEventListener("click", handler);
+
+      console.log("Connected:", buttonId);
     });
   }
 
-  setupButtons();
-
-  // observe sidebar state changes
-  const observer = new MutationObserver(updateActiveButtons);
-  observer.observe(document.getElementById("sidebar-box"), {
-    attributes: true,
+  // 🔥 Wait until buttons appear in DOM
+  const waitObserver = new MutationObserver(() => {
+    setupButtons();
   });
 
-  // initial state
-  setTimeout(updateActiveButtons, 50);
+  waitObserver.observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
 
-  console.log("SidebarController wiring complete");
+  // observe sidebar state
+  const sidebarBox = document.getElementById("sidebar-box");
+  if (sidebarBox) {
+    const observer = new MutationObserver(updateActiveButtons);
+    observer.observe(sidebarBox, { attributes: true });
+  }
+
+  // initial attempt
+  setTimeout(setupButtons, 50);
+  setTimeout(updateActiveButtons, 100);
+
+  console.log("SidebarController wiring ready (waiting for buttons)");
 })();
