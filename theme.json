@@ -1,19 +1,19 @@
 {
-  "id": "zen-sidebar-switcher-inline",
-  "name": "Sidebar Panel Switcher Inline",
-  "description": "Show all sidebar panel options inline instead of a popup",
+  "id": "zen-sidebar-quick-buttons",
+  "name": "Sidebar Panel Quick Buttons",
+  "description": "Remap history/bookmarks/synced tabs/bitwarden addon buttons to open side panel instead of popup. Adds AI chats button",
   "scripts": {
-    "zenSidebarSwitcher.uc.js": {
+    "zen-sidebar-quick-buttons.uc.js": {
       "include": [
         "chrome://browser/content/browser.xhtml"
       ]
     }
   },
-  "homepage": "https://github.com/yourusername/zen-sidebar-switcher-inline",
+  "homepage": "https://github.com/ewfegy-jpg/zen-sidebar-quick-buttons",
   "style": {
     "chrome": "userChrome.css"
   },
-  "author": "You",
+  "author": "Ewfegy",
   "version": "1.0.0",
   "tags": [
     "Zen Browser",
@@ -22,5 +22,5 @@
     "Sine"
   ],
   "createdAt": "2026-03-20",
-  "updatedAt": "2026-03-20"
+  "updatedAt": "2026-03-29"
 }
