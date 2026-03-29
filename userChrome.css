@@ -1,9 +1,35 @@
-[data-sidebar-active="true"] {
 
-  background: var(--button-background-color-hover) !important;
-  
+
+
+#zen-sidebar-top-buttons-customization-target
+.toolbaritem-combined-buttons,
+#bookmarks-menu-button,
+#history-panelmenu,
+#sync-button,
+#logins-button,
+#zen-ai-sidebar-toggle {
+  opacity: 0.3;
 }
 
-#zen-sidebar-extra-panel .toolbaritem-combined-buttons {
-	margin-inline: 0 !important;
+#zen-sidebar-top-buttons-customization-target
+.toolbarbutton-1[data-sidebar-active="true"],
+.toolbaritem-combined-buttons[data-sidebar-active="true"] {
+
+  border-bottom: 4px solid var(--background-color-list-item-hover) !important;
+  border-top: 4px solid transparent !important;
+  opacity: 0.9 !important;
 }
+
+
+#_446900e4-71c2-419f-a6a7-df9c091e268b_-BAP {
+  --webextension-toolbar-image-dark: url("chrome://browser/skin/login.svg") !important;
+  --webextension-toolbar-image: url("chrome://browser/skin/login.svg") !important;
+}
+
+
+#translate-in-sidebar_vivanov89-BAP {
+  --webextension-toolbar-image-dark: url("chrome://browser/skin/translations.svg") !important;
+  --webextension-toolbar-image: uurl("chrome://browser/skin/translations.svg") !important;
+}
+
+
