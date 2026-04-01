@@ -1,23 +1,98 @@
-
-
-
-#zen-sidebar-top-buttons-customization-target
-.toolbaritem-combined-buttons,
-#bookmarks-menu-button,
-#history-panelmenu,
-#sync-button,
-#logins-button,
-#zen-ai-sidebar-toggle {
-  opacity: 0.3;
+/* Make main layout horizontal */
+#zen-appcontent-wrapper {
+  flex-direction: row !important;
 }
 
-#zen-sidebar-top-buttons-customization-target
-.toolbarbutton-1[data-sidebar-active="true"],
-.toolbaritem-combined-buttons[data-sidebar-active="true"] {
+#zen-appcontent-navbar-wrapper {
+  order: 2;
+  box-shadow: 9px 0px 0px -8px var(--sidebar-border-color);
+}
 
-  border-bottom: 4px solid var(--background-color-list-item-hover) !important;
-  border-top: 4px solid transparent !important;
-  opacity: 0.9 !important;
+/* Default sidebar (collapsed/normal state) */
+:root[zen-single-toolbar="true"]:not([customizing])
+#zen-appcontent-navbar-wrapper {
+  --zen-toolbar-height: 100% !important;
+  width: 32px ;
+
+  height: 100vh !important;       /* use viewport, not % */
+  min-height: 100vh !important;
+}
+
+
+/* Ultra-collapsed (hidden) state */
+@media -moz-pref("zen.view.hide-window-controls") {
+  :root[zen-single-toolbar="true"]:not([customizing])[zen-has-bookmarks]
+  #zen-appcontent-navbar-wrapper:not([zen-has-hover="true"]):not([has-popup-menu]):not([zen-compact-mode-active]),
+  
+  :root[zen-single-toolbar="true"]:not([customizing])
+  #zen-appcontent-navbar-wrapper[should-hide="true"]:not([zen-has-hover="true"]):not([has-popup-menu]):not([zen-compact-mode-active]) {
+    
+    width: 1px ;
+
+    height: 100vh !important;
+    min-height: 100vh !important;
+
+    --zen-toolbar-height: 100% !important;
+  }
+}
+
+#zen-sidebar-extra-panel {
+  flex-direction: column;
+}
+
+:root:not([inDOMFullscreen="true"]):not([chromehidden~="location"]):not([chromehidden~="toolbar"])
+  #zen-tabbox-wrapper {
+  margin-top: var(--zen-element-separation) !important;
+}
+
+
+.browserContainer,
+.browserStack,
+.browserStack > browser {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Smooth expand/collapse for left sidebar */
+:root[zen-single-toolbar="true"]:not([customizing])
+#zen-appcontent-navbar-wrapper {
+  transition: width 0.25s ease-in-out !important; /* adjust timing as desired */
+}
+
+#zen-sidebar-extra-panel toolbarbutton {
+  justify-content: flex-start !important;
+ 
+}
+
+
+#zen-appcontent-navbar-wrapper:has(#sidebar-button[checked="true"]) {
+  width: 32px !important;
+  opacity: 1 !important;
+}
+
+:root:has(#navigator-toolbox[zen-has-hover="true"])
+#zen-appcontent-navbar-wrapper {
+  width: 32px !important;
+  opacity: 1 !important;
+}
+
+#zen-sidebar-extra-panel {
+  margin: 4px 0px 4px 0;
+}
+
+
+
+/* default state */
+#zen-sidebar-extra-panel .toolbarbutton-1,
+#zen-sidebar-extra-panel .toolbaritem-combined-buttons .toolbarbutton-1 {
+  opacity: 0.5;
+}
+
+/* active state */
+#zen-sidebar-extra-panel .toolbarbutton-1[data-sidebar-active="true"],
+#zen-sidebar-extra-panel .toolbaritem-combined-buttons[data-sidebar-active="true"] .toolbarbutton-1 {
+  opacity: 1 !important;
+  box-shadow: inset 2px 0 0 var(--background-color-list-item-hover) !important;
 }
 
 
@@ -29,7 +104,10 @@
 
 #translate-in-sidebar_vivanov89-BAP {
   --webextension-toolbar-image-dark: url("chrome://browser/skin/translations.svg") !important;
-  --webextension-toolbar-image: uurl("chrome://browser/skin/translations.svg") !important;
+  --webextension-toolbar-image: url("chrome://browser/skin/translations.svg") !important;
 }
 
 
+toolbar .toolbaritem-combined-buttons {
+  margin-inline: 0 !important;
+}
